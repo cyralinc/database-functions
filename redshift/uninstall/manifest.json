@@ -1,0 +1,12 @@
+{
+    "name": "RedshiftUninstallMaskUDF",
+    "type": "sql",
+    "category": "builtin",
+    "builtInType": "redshift.udf.uninstall",
+    "version": "v0.0.1",
+    "description": "Redshift Masking UDF. To be used when the admin wants to drop the masking UDF.",
+    "parameterFilename": "parameter_schema.json",
+    "codeFilename": "udf.sql",
+    "purpose": "masking",
+    "createEmptyInstance": true
+}

@@ -1,0 +1,12 @@
+{
+    "name": "RedshiftInstallMaskUDF",
+    "type": "sql",
+    "category": "builtin",
+    "builtInType": "redshift.udf.install",
+    "version": "v0.0.3",
+    "description": "Redshift Masking UDF. To be used when the user reads sensible data from the repo and masking is required.",
+    "parameterFilename": "parameter_schema.json",
+    "codeFilename": "udf.sql",
+    "purpose": "masking",
+    "createEmptyInstance": true
+}
