@@ -102,4 +102,4 @@ as $$
 $$ language plpythonu;
 
 grant execute on function ${SCHEMA}.${FUNC_NAME}(data anyelement, mask varchar) to PUBLIC;
-comment on function ${SCHEMA}.${FUNC_NAME}(data anyelement, mask varchar) is '${SCHEMA}.${FUNC_NAME}\n${VERSION}\n${TIMESTAMP}';
+comment on function ${SCHEMA}.${FUNC_NAME}(data anyelement, mask varchar) is '${SCHEMA}.${FUNC_NAME}\n${VERSION}\n${TIMESTAMP}\n${GITHUB_LINK}';
