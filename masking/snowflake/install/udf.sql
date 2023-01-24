@@ -1,4 +1,10 @@
-CREATE OR REPLACE FUNCTION %s.CyralMask(mask_spec array, columns array)
+CREATE DATABASE IF NOT EXISTS ${DB};
+GRANT USAGE ON DATABASE ${DB} TO PUBLIC;
+
+CREATE SCHEMA IF NOT EXISTS ${DB}.${SCHEMA};
+GRANT USAGE ON SCHEMA ${DB}.${SCHEMA} TO PUBLIC;
+
+CREATE OR REPLACE FUNCTION ${DB}.${SCHEMA}.${FUNC_NAME}(mask_spec array, columns array)
   RETURNS TABLE (masked_columns array)
   LANGUAGE JAVASCRIPT
   AS '{
@@ -49,26 +55,26 @@ CREATE OR REPLACE FUNCTION %s.CyralMask(mask_spec array, columns array)
             var str = [...Array(len)].map(_=>(Math.random()*10|0).toString(10)).join``;
             return parseInt(str);
           }
-          // We do not support the data type so we return it unmasked
-          return data; // TODO: Support other data types.
+          // We do not support the data type so we return it null masked
+          return undefined; // TODO: Support other data types.
         }
         // This function will determine which masking type will be performed on the data
         // and then return the value based upon the masking type
         this.maskFunction = function(mask_type, data) {
           const mask = JSON.parse(mask_type);
-        
+
           switch(mask["maskFuncName"]) {
             case "null_mask":
               return undefined;
             case "constant_mask":
               if (mask["maskFuncArgs"] == undefined || mask["maskFuncArgs"].length != 1) {
-                return data;
+                return undefined;
               }
               return mask["maskFuncArgs"][0];
             case "mask":
               return this.preserve_format_mask(data);
             default:
-              return data;
+              return undefined;
           };
         };
       },
@@ -82,3 +88,6 @@ CREATE OR REPLACE FUNCTION %s.CyralMask(mask_spec array, columns array)
           rowWriter.writeRow({MASKED_COLUMNS: row.COLUMNS}); // TODO : try returning a SQL Error instead
         };
       }}';
+
+GRANT USAGE ON FUNCTION ${DB}.${SCHEMA}.${FUNC_NAME}(array, array) TO PUBLIC;
+COMMENT ON FUNCTION ${DB}.${SCHEMA}.${FUNC_NAME}(array, array) IS '${DB}.${SCHEMA}.${FUNC_NAME}\n${VERSION}\n${TIMESTAMP}\n${GITHUB_LINK}';
